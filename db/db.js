@@ -53,7 +53,15 @@ const Colorgroup = db.define('colorgroup', {
   },
 });
 
-const Palette = db.define('palette', {});
+const Palette = db.define('palette', {
+  opacity: {
+    type: DataTypes.INTEGER,
+    defaultValue: 100,
+  },
+  img: {
+    type: DataTypes.STRING,
+  },
+});
 
 const Brand_offering = db.define('brand_offering', {
   price: { type: DataTypes.DECIMAL(10, 2) },

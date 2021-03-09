@@ -305,6 +305,17 @@ eval("\n\nvar bind = __webpack_require__(/*! ./helpers/bind */ \"./node_modules/
 
 /***/ }),
 
+/***/ "./client/ColorChart.jsx":
+/*!*******************************!*\
+  !*** ./client/ColorChart.jsx ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\n\nconst ColorChart = ({\n  colors,\n  addColor\n}) => {\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"div\", {\n    id: \"colors_container\"\n  }, colors.map(color => {\n    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"div\", {\n      className: \"color\",\n      key: color.id\n    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"button\", {\n      id: \"addToPalette\"\n    }, \"+\"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"img\", {\n      id: \"colorimage\",\n      src: color.swatch,\n      onClick: () => {\n        addColor(color.id, color.swatch);\n      }\n    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"p\", null, color.name));\n  }));\n};\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ColorChart);\n\n//# sourceURL=webpack://full-stack-demo/./client/ColorChart.jsx?");
+
+/***/ }),
+
 /***/ "./client/Main.jsx":
 /*!*************************!*\
   !*** ./client/Main.jsx ***!
@@ -312,7 +323,18 @@ eval("\n\nvar bind = __webpack_require__(/*! ./helpers/bind */ \"./node_modules/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ \"./node_modules/axios/index.js\");\n/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);\n\n\nconst content = document.querySelector('#content');\n\nclass Main extends react__WEBPACK_IMPORTED_MODULE_0__.Component {\n  constructor() {\n    super();\n    this.state = {};\n  }\n\n  async componentDidMount() {}\n\n  render() {\n    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"div\", null, \"testing\");\n  }\n\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Main);\n\n//# sourceURL=webpack://full-stack-demo/./client/Main.jsx?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ \"./node_modules/axios/index.js\");\n/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _ColorChart_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ColorChart.jsx */ \"./client/ColorChart.jsx\");\n/* harmony import */ var _Palette_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Palette.jsx */ \"./client/Palette.jsx\");\n\n\n\n\nconst content = document.querySelector('#content');\n\nclass Main extends react__WEBPACK_IMPORTED_MODULE_0__.Component {\n  constructor() {\n    super();\n    this.state = {\n      colors: [],\n      swatches: []\n    };\n    this.addColor = this.addColor.bind(this);\n  }\n\n  async componentDidMount() {\n    const colors = (await axios__WEBPACK_IMPORTED_MODULE_1___default().get('/api/colors')).data;\n    this.setState({\n      colors\n    });\n  }\n\n  async addColor(swatch, colorImg) {\n    console.log(this.state.swatches);\n\n    try {\n      //   const palette = (await axios.get('/api/palette')).data;\n      //   if (palette.length >= 3) {\n      //     alert('Too many!');\n      //   } else {\n      const addTo = {\n        colorId: swatch,\n        img: colorImg\n      };\n      await axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/palette', addTo);\n      const palette = (await axios__WEBPACK_IMPORTED_MODULE_1___default().get('/api/palette/imgs')).data;\n      this.setState({\n        swatches: [...this.state.swatches, colorImg]\n      }); //   }\n    } catch (err) {\n      console.log(err);\n    }\n  }\n\n  render() {\n    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"div\", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_ColorChart_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {\n      colors: this.state.colors,\n      addColor: this.addColor\n    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Palette_jsx__WEBPACK_IMPORTED_MODULE_3__.default, {\n      swatches: this.state.swatches\n    }));\n  }\n\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Main);\n\n//# sourceURL=webpack://full-stack-demo/./client/Main.jsx?");
+
+/***/ }),
+
+/***/ "./client/Palette.jsx":
+/*!****************************!*\
+  !*** ./client/Palette.jsx ***!
+  \****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\n\nconst Palette = ({\n  swatches\n}) => {\n  console.log(swatches);\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"div\", {\n    id: \"palette\"\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"h1\", null, \"Palette\"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"div\", {\n    id: \"swatches\"\n  }, swatches.map((swatch, idx) => {\n    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"p\", {\n      className: \"swatch\",\n      key: idx\n    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"img\", {\n      src: swatch\n    }));\n  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"div\", {\n    id: \"mixer\"\n  }, swatches.map((swatch, idx) => {\n    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"img\", {\n      src: swatch,\n      style: {\n        opacity: '50%'\n      },\n      className: idx === 0 ? 'firstswatch' : 'paletteswatch'\n    });\n  })));\n};\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Palette);\n\n//# sourceURL=webpack://full-stack-demo/./client/Palette.jsx?");
 
 /***/ }),
 
