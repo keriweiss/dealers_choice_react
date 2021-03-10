@@ -44,10 +44,6 @@ body {
   width: 400px;
   height: 150px;
   border: 2px black solid;
-  /* align-self: center; */
-  /* position: fixed;
-  margin-left: 25%;
-  margin-top: 10%; */
   margin: 5px;
   display: flex;
   justify-content: space-around;
@@ -97,4 +93,11 @@ body {
 
 #content {
   overflow: scroll;
+}
+
+#paintinfo {
+  position: fixed;
+  border: 2px black solid;
+  margin-left: 830px;
+  padding: 10px;
 }

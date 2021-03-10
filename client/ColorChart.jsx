@@ -1,12 +1,20 @@
 import React from 'react';
 
-const ColorChart = ({ colors, addColor }) => {
+const ColorChart = ({ colors, addColor, colorInfo }) => {
   return (
     <div id='colors_container'>
       {colors.map((color) => {
         return (
           <div className='color' key={color.id}>
-            <button id='addToPalette'>+</button>
+            <button
+              id='addToPalette'
+              onClick={() => {
+                console.log(color);
+                colorInfo(color);
+              }}
+            >
+              info
+            </button>
             <img
               id='colorimage'
               src={color.swatch}

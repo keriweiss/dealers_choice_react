@@ -1,7 +1,6 @@
 import React from 'react';
 
 const Palette = ({ swatches }) => {
-  console.log(swatches);
   return (
     <div id='palette'>
       <h1>Palette</h1>
@@ -18,8 +17,9 @@ const Palette = ({ swatches }) => {
         {swatches.map((swatch, idx) => {
           return (
             <img
+              key={idx}
               src={swatch}
-              style={{ opacity: '50%' }}
+              style={idx === 0 ? { opacity: '100%' } : { opacity: '50%' }}
               className={idx === 0 ? 'firstswatch' : 'paletteswatch'}
             />
           );

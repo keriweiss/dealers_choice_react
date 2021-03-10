@@ -12,7 +12,7 @@ router.use(express.json());
 
 router.get('/colors', async (req, res, next) => {
   try {
-    res.send(await Color.findAll());
+    res.send(await Color.findAll({ include: Brand }));
   } catch (err) {
     next(err);
   }
