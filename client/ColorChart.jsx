@@ -6,7 +6,8 @@ const ColorChart = ({ colors, addColor, colorInfo }) => {
       {colors.map((color) => {
         return (
           <div className='color' key={color.id}>
-            <button
+            <p
+              className='button'
               id='addToPalette'
               onClick={() => {
                 console.log(color);
@@ -14,7 +15,7 @@ const ColorChart = ({ colors, addColor, colorInfo }) => {
               }}
             >
               info
-            </button>
+            </p>
             <img
               id='colorimage'
               src={color.swatch}

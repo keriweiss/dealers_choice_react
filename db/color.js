@@ -64,7 +64,7 @@ const colors = [
   },
   {
     id: 'phthaloGreen',
-    name: 'Pthalo Green',
+    name: 'Phthalo Green',
     pigment: 'Polychloro Copper Pthalocyanine',
     swatch: 'assets/colorimages/phthalogreen.jpg',
     colorgroupId: 'green',

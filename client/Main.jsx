@@ -3,7 +3,7 @@ import axios from 'axios';
 import ColorChart from './ColorChart.jsx';
 import Palette from './Palette.jsx';
 import PaintInfo from './PaintInfo.jsx';
-import { createPortal } from 'react-dom';
+import PaletteInfo from './PaletteInfo.jsx';
 
 const content = document.querySelector('#content');
 
@@ -14,11 +14,20 @@ class Main extends Component {
       colors: [],
       swatches: [],
       paintInfo: {},
+      paletteInfo: [],
+      opacity: 50,
+      selectedColor: {},
     };
     this.addColor = this.addColor.bind(this);
     this.colorInfo = this.colorInfo.bind(this);
+    this.deleteColor = this.deleteColor.bind(this);
+    this.resetPalette = this.resetPalette.bind(this);
+    this.getPaletteInfo = this.getPaletteInfo.bind(this);
+    this.changeOpacity = this.changeOpacity.bind(this);
+    this.selectColor = this.selectColor.bind(this);
   }
   async componentDidMount() {
+    await axios.delete('/api/palette');
     const colors = (await axios.get('/api/colors')).data;
     this.setState({
       colors,
@@ -26,27 +35,53 @@ class Main extends Component {
   }
 
   async addColor(swatch, colorImg) {
-    try {
-      //   const palette = (await axios.get('/api/palette')).data;
-      //   if (palette.length >= 3) {
-      //     alert('Too many!');
-      //   } else {
-      const addTo = { colorId: swatch, img: colorImg };
-      await axios.post('/api/palette', addTo);
-      const palette = (await axios.get('/api/palette/imgs')).data;
-      this.setState({ swatches: [...this.state.swatches, colorImg] });
-      //   }
-    } catch (err) {
-      console.log(err);
-    }
+    const addTo = { colorId: swatch, img: colorImg };
+    await axios.post('/api/palette', addTo);
+    const palette = (await axios.get('/api/palette')).data;
+    this.setState({ swatches: palette.sort((a, b) => a.id - b.id) });
+    console.log('done');
   }
 
   async colorInfo(color) {
-    await this.setState({ paintInfo: color });
-    console.log(this.state.paintInfo);
+    await this.setState({ paintInfo: color, paletteInfo: [] });
+  }
+
+  async deleteColor(colorId) {
+    await axios.delete(`/api/palette/${colorId}`);
+    const palette = (await axios.get('/api/palette')).data;
+    this.setState({ swatches: palette.sort((a, b) => a.id - b.id) });
+  }
+
+  async resetPalette() {
+    await axios.delete('/api/palette');
+    const palette = (await axios.get('/api/palette')).data;
+    this.setState({ swatches: palette.sort((a, b) => a.id - b.id) });
+  }
+
+  async getPaletteInfo() {
+    const palette = (await axios.get('/api/palette')).data;
+    this.setState({ paletteInfo: palette, paintInfo: {} });
+  }
+
+  async changeOpacity(value) {
+    const colorId = this.state.selectedColor.id;
+    await axios.put(`/api/palette/${colorId}`, { opacity: value });
+    const palette = (await axios.get('/api/palette')).data;
+    this.setState({ swatches: palette.sort((a, b) => a.id - b.id) });
+    console.log(this.state.swatches);
+  }
+
+  async selectColor(color) {
+    await this.setState({ selectedColor: color });
   }
 
   render() {
+    let info;
+    if (this.state.paintInfo.id) {
+      info = <PaintInfo paintInfo={this.state.paintInfo} />;
+    } else if (this.state.paletteInfo.length) {
+      info = <PaletteInfo paletteInfo={this.state.paletteInfo} />;
+    }
     return (
       <div id='main'>
         <ColorChart
@@ -54,12 +89,17 @@ class Main extends Component {
           addColor={this.addColor}
           colorInfo={this.colorInfo}
         />
-        <Palette swatches={this.state.swatches} />
-        {this.state.paintInfo.id ? (
-          <PaintInfo paintInfo={this.state.paintInfo} />
-        ) : (
-          <div />
-        )}
+        <Palette
+          swatches={this.state.swatches}
+          deleteColor={this.deleteColor}
+          resetPalette={this.resetPalette}
+          getPaletteInfo={this.getPaletteInfo}
+          opacity={this.state.opacity}
+          changeOpacity={this.changeOpacity}
+          selectColor={this.selectColor}
+          selectedColor={this.state.selectedColor}
+        />
+        {info}
       </div>
     );
   }

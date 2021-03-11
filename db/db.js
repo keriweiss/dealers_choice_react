@@ -56,7 +56,7 @@ const Colorgroup = db.define('colorgroup', {
 const Palette = db.define('palette', {
   opacity: {
     type: DataTypes.INTEGER,
-    defaultValue: 100,
+    defaultValue: 50,
   },
   img: {
     type: DataTypes.STRING,
