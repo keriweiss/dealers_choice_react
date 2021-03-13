@@ -1,7 +1,6 @@
 import React from 'react';
 
 const Mixer = ({ swatches }) => {
-  console.log(swatches);
   return (
     <div id='mixer'>
       {swatches.map((swatch, idx) => {

@@ -4,8 +4,7 @@ import ColorChart from './ColorChart.jsx';
 import Palette from './Palette.jsx';
 import PaintInfo from './PaintInfo.jsx';
 import PaletteInfo from './PaletteInfo.jsx';
-
-const content = document.querySelector('#content');
+import ColorGroupSelect from './ColorGroupSelect.jsx';
 
 class Main extends Component {
   constructor() {
@@ -15,7 +14,6 @@ class Main extends Component {
       swatches: [],
       paintInfo: {},
       paletteInfo: [],
-      opacity: 50,
       selectedColor: {},
     };
     this.addColor = this.addColor.bind(this);
@@ -25,6 +23,7 @@ class Main extends Component {
     this.getPaletteInfo = this.getPaletteInfo.bind(this);
     this.changeOpacity = this.changeOpacity.bind(this);
     this.selectColor = this.selectColor.bind(this);
+    this.colorGroup = this.colorGroup.bind(this);
   }
   async componentDidMount() {
     await axios.delete('/api/palette');
@@ -35,11 +34,34 @@ class Main extends Component {
   }
 
   async addColor(swatch, colorImg) {
-    const addTo = { colorId: swatch, img: colorImg };
-    await axios.post('/api/palette', addTo);
-    const palette = (await axios.get('/api/palette')).data;
-    this.setState({ swatches: palette.sort((a, b) => a.id - b.id) });
-    console.log('done');
+    if (this.state.swatches.length >= 5) {
+      alert('5 colors only.');
+    } else {
+      const addTo =
+        this.state.swatches.length === 0
+          ? { colorId: swatch, img: colorImg, opacity: 100 }
+          : { colorId: swatch, img: colorImg };
+      await axios.post('/api/palette', addTo);
+      const palette = (await axios.get('/api/palette')).data;
+      this.setState({ swatches: palette.sort((a, b) => a.id - b.id) });
+    }
+  }
+
+  async colorGroup(group) {
+    const colors = (await axios.get('/api/colors')).data;
+    if (group === 'Select Color Group') {
+      this.setState({
+        colors,
+      });
+    } else {
+      const colorsByGroup = [];
+      colors.map((color) => {
+        if (group.toLowerCase().includes(color.colorgroupId)) {
+          colorsByGroup.push(color);
+        }
+      });
+      this.setState({ colors: colorsByGroup });
+    }
   }
 
   async colorInfo(color) {
@@ -68,7 +90,6 @@ class Main extends Component {
     await axios.put(`/api/palette/${colorId}`, { opacity: value });
     const palette = (await axios.get('/api/palette')).data;
     this.setState({ swatches: palette.sort((a, b) => a.id - b.id) });
-    console.log(this.state.swatches);
   }
 
   async selectColor(color) {
@@ -84,6 +105,7 @@ class Main extends Component {
     }
     return (
       <div id='main'>
+        <ColorGroupSelect colorGroup={this.colorGroup} />
         <ColorChart
           colors={this.state.colors}
           addColor={this.addColor}
