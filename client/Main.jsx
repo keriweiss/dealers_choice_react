@@ -49,7 +49,7 @@ class Main extends Component {
 
   async colorGroup(group) {
     const colors = (await axios.get('/api/colors')).data;
-    if (group === 'Select Color Group') {
+    if (group === 'All') {
       this.setState({
         colors,
       });

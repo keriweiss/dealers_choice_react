@@ -11,7 +11,7 @@ const ColorGroupSelect = ({ colorGroup }) => {
           colorGroup(selectGroup.value);
         }}
       >
-        <option>Select Color Group</option>
+        <option>All</option>
         <option>Blue</option>
         <option>Earth Tones</option>
         <option>Yellow</option>
