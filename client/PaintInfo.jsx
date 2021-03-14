@@ -14,7 +14,7 @@ const PaintInfo = ({ paintInfo }) => {
               <a href={brand.url}>{brand.name}</a>
             </ul>
             <ul>{brand.location}</ul>
-            <ul>{brand.brand_offering.price}</ul>
+            <ul>${brand.brand_offering.price}</ul>
           </div>
         );
       })}
