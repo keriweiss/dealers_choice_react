@@ -21,7 +21,9 @@ body {
 #colorimage {
   height: 60px;
   width: 100px;
-  padding: 2px;
+  /* padding: 2px; */
+  border: 2px black solid;
+  margin: 3px;
 }
 
 #colors_container {
